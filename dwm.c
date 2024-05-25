@@ -194,14 +194,14 @@ static Monitor *createmon(void);
 static void destroynotify(XEvent *e);
 static void detach(Client *c);
 static void detachstack(Client *c);
-static Monitor *dirtomon(int dir);
+// static Monitor *dirtomon(int dir);
 static void drawbar(Monitor *m);
 static void drawbars(void);
 static void enternotify(XEvent *e);
 static void expose(XEvent *e);
 static void focus(Client *c);
 static void focusin(XEvent *e);
-static void focusmon(const Arg *arg);
+// static void focusmon(const Arg *arg);
 static void focusstack(const Arg *arg);
 static Atom getatomprop(Client *c, Atom prop);
 static int getrootptr(int *x, int *y);
@@ -211,7 +211,7 @@ static pid_t getstatusbarpid();
 static int gettextprop(Window w, Atom atom, char *text, unsigned int size);
 static void grabbuttons(Client *c, int focused);
 static void grabkeys(void);
-static void incnmaster(const Arg *arg);
+// static void incnmaster(const Arg *arg);
 static void keypress(XEvent *e);
 static void killclient(const Arg *arg);
 static void manage(Window w, XWindowAttributes *wa);
@@ -243,7 +243,7 @@ static void setfullscreen(Client *c, int fullscreen);
 static void fullscreen(const Arg *arg);
 static void setgaps(const Arg *arg);
 static void setlayout(const Arg *arg);
-static void setmfact(const Arg *arg);
+// static void setmfact(const Arg *arg);
 static void setup(void);
 static void seturgent(Client *c, int urg);
 static void showhide(Client *c);
@@ -251,7 +251,7 @@ static void sigstatusbar(const Arg *arg);
 static void spawn(const Arg *arg);
 static Monitor *systraytomon(Monitor *m);
 static void tag(const Arg *arg);
-static void tagmon(const Arg *arg);
+// static void tagmon(const Arg *arg);
 static void tile(Monitor *m);
 static void togglebar(const Arg *arg);
 static void togglefloating(const Arg *arg);
@@ -586,7 +586,7 @@ buttonpress(XEvent *e)
     {
 			click = ClkWinTitle;
     }
-	} else if (c = wintoclient(ev->window)) {
+	} else if ( (c = wintoclient ((ev->window)))) {
 		focus(c);
 		restack(selmon);
 		XAllowEvents(dpy, ReplayPointer, CurrentTime);
@@ -698,7 +698,7 @@ clientmessage(XEvent *e)
 			updatesystrayicongeom(c, wa.width, wa.height);
 			XAddToSaveSet(dpy, c->win);
 			XSelectInput(dpy, c->win, StructureNotifyMask | PropertyChangeMask | ResizeRedirectMask);
-			XReparentWindow(dpy, c->win, systray->win, 100, 20);
+			XReparentWindow(dpy, c->win, systray->win, 0, 0);
 			/* use parents background color */
 			swa.background_pixel  = scheme[SchemeNorm][ColBg].pixel;
 			XChangeWindowAttributes(dpy, c->win, CWBackPixel, &swa);
@@ -887,20 +887,20 @@ detachstack(Client *c)
 	}
 }
 
-Monitor *
-dirtomon(int dir)
-{
-	Monitor *m = NULL;
-
-	if (dir > 0) {
-		if (!(m = selmon->next))
-			m = mons;
-	} else if (selmon == mons)
-		for (m = mons; m->next; m = m->next);
-	else
-		for (m = mons; m->next != selmon; m = m->next);
-	return m;
-}
+// Monitor *
+// dirtomon(int dir)
+// {
+// 	Monitor *m = NULL;
+//
+// 	if (dir > 0) {
+// 		if (!(m = selmon->next))
+// 			m = mons;
+// 	} else if (selmon == mons)
+// 		for (m = mons; m->next; m = m->next);
+// 	else
+// 		for (m = mons; m->next != selmon; m = m->next);
+// 	return m;
+// }
 
 void
 drawbar(Monitor *m)
@@ -1051,19 +1051,19 @@ focusin(XEvent *e)
 		setfocus(selmon->sel);
 }
 
-void
-focusmon(const Arg *arg)
-{
-	Monitor *m;
-
-	if (!mons->next)
-		return;
-	if ((m = dirtomon(arg->i)) == selmon)
-		return;
-	unfocus(selmon->sel, 0);
-	selmon = m;
-	focus(NULL);
-}
+// void
+// focusmon(const Arg *arg)
+// {
+// 	Monitor *m;
+//
+// 	if (!mons->next)
+// 		return;
+// 	if ((m = dirtomon(arg->i)) == selmon)
+// 		return;
+// 	unfocus(selmon->sel, 0);
+// 	selmon = m;
+// 	focus(NULL);
+// }
 
 void
 focusstack(const Arg *arg)
@@ -1249,12 +1249,12 @@ grabkeys(void)
 	}
 }
 
-void
-incnmaster(const Arg *arg)
-{
-	selmon->nmaster = MAX(selmon->nmaster + arg->i, 0);
-	arrange(selmon);
-}
+// void
+// incnmaster(const Arg *arg)
+// {
+// 	selmon->nmaster = MAX(selmon->nmaster + arg->i, 0);
+// 	arrange(selmon);
+// }
 
 #ifdef XINERAMA
 static int
@@ -1970,19 +1970,19 @@ setlayout(const Arg *arg)
 }
 
 /* arg > 1.0 will set mfact absolutely */
-void
-setmfact(const Arg *arg)
-{
-	float f;
-
-	if (!arg || !selmon->lt[selmon->sellt]->arrange)
-		return;
-	f = arg->f < 1.0 ? arg->f + selmon->mfact : arg->f - 1.0;
-	if (f < 0.05 || f > 0.95)
-		return;
-	selmon->mfact = f;
-	arrange(selmon);
-}
+// void
+// setmfact(const Arg *arg)
+// {
+// 	float f;
+//
+// 	if (!arg || !selmon->lt[selmon->sellt]->arrange)
+// 		return;
+// 	f = arg->f < 1.0 ? arg->f + selmon->mfact : arg->f - 1.0;
+// 	if (f < 0.05 || f > 0.95)
+// 		return;
+// 	selmon->mfact = f;
+// 	arrange(selmon);
+// }
 
 void
 setup(void)
@@ -2147,13 +2147,13 @@ tag(const Arg *arg)
 	}
 }
 
-void
-tagmon(const Arg *arg)
-{
-	if (!selmon->sel || !mons->next)
-		return;
-	sendmon(selmon->sel, dirtomon(arg->i));
-}
+// void
+// tagmon(const Arg *arg)
+// {
+// 	if (!selmon->sel || !mons->next)
+// 		return;
+// 	sendmon(selmon->sel, dirtomon(arg->i));
+// }
 
 void
 tile(Monitor *m)
