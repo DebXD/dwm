@@ -12,9 +12,9 @@ static const int systraypinningfailfirst = 1;   /* 1: if pinning fails, display 
 static const int showsystray        = 1;     /* 0 means no systray */
 static const int showbar            = 1;     /* 0 means no bar */
 static const int topbar             = 1;     /* 0 means bottom bar */
-static const char *fonts[]          = { "CaskaydiaCove Nerd Font:size=10" };
-static const char dmenufont[]       = "CaskaydiaCove Nerd Font:size=10";
-static const char col_gray1[]       = "#282828";
+static const char *fonts[]          = { "FiraCode Nerd Font:size=12" };
+static const char dmenufont[]       = "FiraCode Nerd Font:size=12";
+static const char col_gray1[]       = "#000000";
 static const char col_gray2[]       = "#928374";
 static const char col_gray3[]       = "#ddc7a1";
 static const char col_gray4[]       = "#f3eac7";
@@ -47,7 +47,8 @@ static const Rule rules[] = {
 	/* class     instance  title           tags mask  isfloating  isterminal  noswallow  monitor */
 	{ "St",      NULL,     NULL,           0,         0,          1,           0,        -1 },
 	{ "st-256color",NULL,  NULL,           0,         0,          1,           0,        -1 },
-	{ "kitty",NULL,  NULL,           0,         0,          1,           0,        -1 },
+	{ "wezterm",NULL,  NULL,           0,         0,          1,           0,        -1 },
+	{ "alacritty",NULL,  NULL,           0,         0,          1,           0,        -1 },
 	{ NULL,      NULL,     "Event Tester", 0,         0,          0,           1,        -1 }, /* xev */
 };
 
@@ -78,12 +79,10 @@ static const Layout layouts[] = {
 /* helper for spawning shell commands in the pre dwm-5.0 fashion */
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
 
-#define STATUSBAR "dwmblocks"
-
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
-static const char *termcmd[]  = { "kitty", NULL };
+static const char *termcmd[]  = { "alacritty", NULL };
 static const char *lock[]  = { "slock", NULL };
 
 static const Key keys[] = {
@@ -145,9 +144,7 @@ static const Button buttons[] = {
 	{ ClkTagBar,            MODKEY,         Button1,        tag,            {0} },
 	{ ClkTagBar,            MODKEY,         Button3,        toggletag,      {0} },
 	{ ClkWinTitle,          0,              Button2,        zoom,           {0} },
-	{ ClkStatusText,        0,              Button1,        sigstatusbar,   {.i = 1} },
-	{ ClkStatusText,        0,              Button2,        sigstatusbar,   {.i = 2} },
-	{ ClkStatusText,        0,              Button3,        sigstatusbar,   {.i = 3} },
+	{ ClkStatusText,        0,              Button2,        spawn,          {.v = termcmd } },
 	{ ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
 	{ ClkClientWin,         MODKEY,         Button2,        togglefloating, {0} },
 	{ ClkClientWin,         MODKEY,         Button3,        resizemouse,    {0} },
