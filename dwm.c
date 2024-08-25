@@ -911,8 +911,8 @@ void drawbar(Monitor *m) {
 
     drw_setscheme(drw, scheme[SchemeNorm]);
 
-    tw = TEXTW(stext) - lrpad + 2; /* 2px right padding */
-    drw_text(drw, m->ww - tw - stw, 0, tw, bh, 0, stext, 0);
+    tw = TEXTW(stext); /* 2px right padding */
+    drw_text(drw, m->ww - tw - stw, 0, tw, bh, lrpad / 2, stext, 0);
   }
 
   resizebarwin(m);
@@ -1897,8 +1897,8 @@ void setup(void) {
   drw = drw_create(dpy, screen, root, sw, sh);
   if (!drw_fontset_create(drw, fonts, LENGTH(fonts)))
     die("no fonts could be loaded.");
-  lrpad = drw->fonts->h;
-  bh = drw->fonts->h + 2;
+  lrpad = drw->fonts->h + horizpadbar;
+  bh = user_bh ? user_bh : drw->fonts->h + vertpadbar;
   updategeom();
   /* init atoms */
   utf8string = XInternAtom(dpy, "UTF8_STRING", False);
@@ -1993,8 +1993,8 @@ void showhide(Client *c) {
 void spawn(const Arg *arg) {
   struct sigaction sa;
 
-  if (arg->v == dmenucmd)
-    dmenumon[0] = '0' + selmon->num;
+  /* if (arg->v == dmenucmd) */
+  /*   dmenumon[0] = '0' + selmon->num; */
   if (fork() == 0) {
     if (dpy)
       close(ConnectionNumber(dpy));
